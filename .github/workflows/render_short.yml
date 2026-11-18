@@ -1,0 +1,76 @@
+name: Render Shorts
+
+on:
+  push:
+    paths:
+      - "clips/**"
+      - "scripts.json"
+      - "assets/**"
+      - "generate_short.py"
+      - ".github/workflows/render_short.yml"
+  workflow_dispatch:
+    inputs:
+      only_ids:
+        description: "Nur diese IDs rendern (kommagetrennt, leer = alle)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: render-shorts-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Python einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: ffmpeg + Schriftarten installieren
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-noto-color-emoji fonts-dejavu-core
+          ffmpeg -version | head -n 1
+
+      - name: Fette Shorts-Schrift (Anton) laden, falls keine eigene vorhanden
+        run: |
+          mkdir -p assets
+          if [ ! -f assets/font.ttf ] && [ ! -f assets/Anton-Regular.ttf ]; then
+            curl -fsSL --retry 3 -o assets/Anton-Regular.ttf \
+              https://github.com/google/fonts/raw/main/ofl/anton/Anton-Regular.ttf \
+              || echo "Anton nicht ladbar - DejaVu Sans Bold wird verwendet"
+          fi
+
+      - name: Python-Pakete installieren
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Shorts rendern
+        env:
+          ONLY_IDS: ${{ github.event.inputs.only_ids }}
+          IMAGEIO_FFMPEG_EXE: /usr/bin/ffmpeg
+        run: python generate_short.py
+
+      - name: Fertige Videos als Artifact hochladen
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shorts-${{ github.run_number }}
+          path: output/*_final.mp4
+          if-no-files-found: warn
+          retention-days: 14
+          compression-level: 0
