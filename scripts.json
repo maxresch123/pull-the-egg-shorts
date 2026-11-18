@@ -1,0 +1,29 @@
+[
+  {
+    "id": "egg_001_one_in_a_billion",
+    "clip_file": "clips/clip1.mp4",
+    "voice": "en-US-BrianNeural",
+    "rate": "+15%",
+    "hook_text": "1 IN 999,999,999 EGG?! 😱",
+    "narration": "I pulled the egg one thousand times to find the rarest egg in the whole game. Common. Common. Rare. And then the whole screen started shaking! One in nine hundred ninety nine million! Nobody on the server could believe it! Would you keep it or trade it? Comment below!",
+    "layout": "blur"
+  },
+  {
+    "id": "egg_002_secret_trick",
+    "clip_file": "clips/clip2.mp4",
+    "voice": "en-US-AndrewNeural",
+    "rate": "+15%",
+    "hook_text": "THIS TRICK DOUBLES YOUR LUCK 🍀🥚",
+    "narration": "Stop pulling the egg the normal way! Pro players use this one trick. Wait until your luck boost is active, then pull the egg as fast as you can. Watch this. Legendary! Another legendary! Try it right now and tell me what you got!",
+    "layout": "blur"
+  },
+  {
+    "id": "egg_003_noob_vs_pro",
+    "clip_file": "clips/clip3.mp4",
+    "voice": "en-US-BrianNeural",
+    "rate": "+18%",
+    "hook_text": "NOOB VS PRO IN PULL THE EGG 🔥",
+    "narration": "Noob versus pro in Pull The Egg! The noob pulls one egg and gets a common. The pro saves up, buys every upgrade, and pulls ten eggs at once. Mythic! Mythic! SECRET! Which one are you? Follow for part two!",
+    "layout": "crop"
+  }
+]
